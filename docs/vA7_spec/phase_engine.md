@@ -40,3 +40,26 @@
 - explanation: string (Phase5 で GPT が生成)
 - timestamp: ISO8601 string
 - raw_vector: (optional) debug用の特徴量ベクトル
+
+---
+
+# Write Specification for market_signals (vA7)
+
+## Insert Conditions
+- A new signal is generated from the Phase Engine
+- The new phase differs from the previous phase, or
+- Confidence score exceeds a defined threshold (Phase5で設定)
+
+## Write Target (market_signals table)
+- id: auto
+- created_at: timestamp (API側で生成)
+- phase: string
+- confidence: number
+- explanation: string
+- raw_vector: json (optional)
+- source: "vA7"
+
+## Notes
+- Previous signalはai_outputsから取得可能
+- 書き込みは必ずserver.ts内の専用関数経由で行う
+- DELETEは禁止（vA6不可侵ルール継承）
