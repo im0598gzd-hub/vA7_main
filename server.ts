@@ -8,6 +8,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors, { CorsOptions } from "cors";
 import { neon } from "@neondatabase/serverless";
 import crypto from "crypto";
+import { getIndicatorByDate } from "./src/db/indicatorsRepo";
 
 const app = express();
 
@@ -878,10 +879,22 @@ app.post("/notes/:id/restore", requireAdmin, async (req, res) => {
   }
 });
 
-/* =========================
- [9] Listen
-========================= */
+/* ========================
+   [9] Listen
+======================== */
+
+// ===== vA7 Phase3 test route =====
+app.get("/test-indicator", async (req, res) => {
+  try {
+    const result = await getIndicatorByDate("2025-11-03");
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "failed to fetch indicator" });
+  }
+});
 
 app.listen(PORT, () => {
   log(`Server listening on :${PORT}`);
 });
+
